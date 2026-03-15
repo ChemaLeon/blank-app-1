@@ -28,7 +28,7 @@ with st.form('hp_form'):
     if hp_button:
         player_hp = int(player_hp)
         boss_hp = int(boss_hp)
-        st.writ('Hp set!')
+        st.write('Hp set!')
 chat_history = [
             {"role": "system", "content": system_prompt},]
 
