@@ -25,6 +25,8 @@ with st.form('hp_form'):
     player_hp = int(st.text_input("What should your health be? "))
     boss_hp = int(st.text_input("What should the boss hp be? "))
     hp_button = st.form_submit_button("Submit starting hp")
+    if hp_button:
+        st.writ('Hp set!')
 chat_history = [
             {"role": "system", "content": system_prompt},]
 
