@@ -1,6 +1,73 @@
+import json
+from openai import OpenAI
 import streamlit as st
-
-st.title("🎈 My new app")
-st.write(
-    "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
+from st_chat_message import message
+client = OpenAI(
+    api_key=st.secrets("api_key")
 )
+
+system_prompt = """
+You are a video game boss fighting a player.
+
+Return ONLY JSON with:
+player_damage
+boss_damage
+description
+
+Example:
+{
+"player_damage": 12,
+"boss_damage": 8,
+"description": "The player slashes your armor dealing 12 damage and you strike back with a heavy claw. dealing 8 damage."
+}
+"""
+with st.form('hp_form'):
+    player_hp = int(st.text_input("What should your health be? "))
+    boss_hp = int(st.text_input("What should the boss hp be? "))
+    hp_button = st.form_submit_button("Submit starting hp")
+chat_history = [
+            {"role": "system", "content": system_prompt},]
+
+with st.form('attack'):
+    if player_hp > 0 and boss_hp > 0:
+        attack = st.text_input("Describe your attack: ")
+        button = st.form_submit.button('Submit')
+        if button:
+            user_prompt = f"""
+    Player HP: {player_hp}
+    Boss HP: {boss_hp}
+
+    The player attacks like this: {attack}
+
+    Decide how much damage both sides take and describe the action.
+    """
+
+            chat_history.append( {"role": "user", "content": user_prompt})
+            response = client.chat.completions.create(
+            model="gpt-4o",
+            response_format= {'type':'json_object'},
+            messages=chat_history,
+        
+            )
+
+            result = json.loads(response.choices[0].message.content)
+            chat_history.append({'role':'assistant','content':result['player_damage'] + result["boss_damage"] + result["description"]})
+            player_hp -= result["boss_damage"]
+            boss_hp -= result["player_damage"]
+
+            message(result["description"],is_user=True)
+            message(f"Player HP: {player_hp}")
+            message(f"Boss HP: {boss_hp}")
+
+
+    if player_hp <= 0:
+        st.write("\nYou were defeated.")
+
+    if boss_hp <= 0:
+        st.write("\nYou defeated the boss!")
+
+
+
+
+
+
