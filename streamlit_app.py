@@ -33,7 +33,7 @@ chat_history = [
             {"role": "system", "content": system_prompt},]
 
 with st.form('attack'):
-    button = st.form_submit.button('Submit')
+    button = st.form_submit_button('Submit')
     if type(player_hp) == int and player_hp > 0 and boss_hp > 0:
         attack = st.text_input("Describe your attack: ")
         
