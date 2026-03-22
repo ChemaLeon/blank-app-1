@@ -29,7 +29,7 @@ with st.form('hp_form'):
         st.session_state['boss_hp'] = (st.text_input("What should the boss hp be? "))
     hp_button = st.form_submit_button("Submit starting hp")
     if hp_button:
-        st.write('Hp set!')
+        st.write(f'Hp set! {st.session_state['player_hp']}')
 if 'chat_history' not in st.session_state: 
     st.session_state['chat_history'] = [
                 {"role": "system", "content": system_prompt},]
