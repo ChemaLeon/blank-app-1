@@ -23,12 +23,14 @@ Example:
 }
 """
 with st.form('hp_form'):
-    player_hp = (st.text_input("What should your health be? "))
-    boss_hp = (st.text_input("What should the boss hp be? "))
+    if 'player_hp' not in st.session_state:
+        st.session_state['player_hp'] = (st.text_input("What should your health be? "))
+    if 'boss_hp' not in st.session_state:
+        st.session_state['boss_hp'] = (st.text_input("What should the boss hp be? "))
     hp_button = st.form_submit_button("Submit starting hp")
     if hp_button:
-        player_hp = int(player_hp)
-        boss_hp = int(boss_hp)
+        st.session_state['player_hp'] = int(st.session_state['player_hp'])
+        st.session_state['boss_hp'] = int(st.session_state['boss_hp'])
         st.write('Hp set!')
 if 'chat_history' not in st.session_state: 
     st.session_state['chat_history'] = [
@@ -36,13 +38,13 @@ if 'chat_history' not in st.session_state:
 
 with st.form('attack'):
     button = st.form_submit_button('Submit')
-    if type(player_hp) == int and player_hp > 0 and boss_hp > 0:
+    if type(st.session_state['player_hp']) == int and st.session_state['player_hp'] > 0 and boss_hp > 0:
         attack = st.text_input("Describe your attack: ")
         
         if button:
             user_prompt = f"""
-    Player HP: {player_hp}
-    Boss HP: {boss_hp}
+    Player HP: {st.session_state['player_hp']}
+    Boss HP: {st.session_state['boss_hp']}
 
     The player attacks like this: {attack}
 
@@ -59,19 +61,19 @@ with st.form('attack'):
 
             result = json.loads(response.choices[0].message.content)
             st.session_state['chat_history'].append({'role':'assistant','content':result['player_damage'] + result["boss_damage"] + result["description"]})
-            player_hp -= result["boss_damage"]
-            boss_hp -= result["player_damage"]
+            st.session_state['player_hp'] -= result["boss_damage"]
+            st.session_state['boss_hp'] -= result["player_damage"]
 
             message(result["description"],is_user=True)
-            message(f"Player HP: {player_hp}")
-            message(f"Boss HP: {boss_hp}")
+            message(f"Player HP: {st.session_state['player_hp']}")
+            message(f"Boss HP: {st.session_state['boss_hp']}")
 
+    if 'player_hp' in st.session_state and 'boss_hp' in st.session_state:
+        if st.session_state['player_hp'] <= 0:
+            st.write("\nYou were defeated.")
 
-    if player_hp <= 0:
-        st.write("\nYou were defeated.")
-
-    if boss_hp <= 0:
-        st.write("\nYou defeated the boss!")
+        if st.session_state['boss_hp'] <= 0:
+            st.write("\nYou defeated the boss!")
 
 
 
