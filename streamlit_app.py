@@ -2,6 +2,7 @@ import json
 from openai import OpenAI
 import streamlit as st
 from st_chat_message import message
+
 client = OpenAI(
     api_key=st.secrets["api_key"]
 )
@@ -29,8 +30,9 @@ with st.form('hp_form'):
         player_hp = int(player_hp)
         boss_hp = int(boss_hp)
         st.write('Hp set!')
-chat_history = [
-            {"role": "system", "content": system_prompt},]
+if 'chat_history' not in st.session_state: 
+    st.session_state['chat_history'] = [
+                {"role": "system", "content": system_prompt},]
 
 with st.form('attack'):
     button = st.form_submit_button('Submit')
@@ -47,16 +49,16 @@ with st.form('attack'):
     Decide how much damage both sides take and describe the action.
     """
 
-            chat_history.append( {"role": "user", "content": user_prompt})
+            st.session_state['chat_history'].append( {"role": "user", "content": user_prompt})
             response = client.chat.completions.create(
             model="gpt-4o",
             response_format= {'type':'json_object'},
-            messages=chat_history,
+            messages=st.session_state['chat_history'],
         
             )
 
             result = json.loads(response.choices[0].message.content)
-            chat_history.append({'role':'assistant','content':result['player_damage'] + result["boss_damage"] + result["description"]})
+            st.session_state['chat_history'].append({'role':'assistant','content':result['player_damage'] + result["boss_damage"] + result["description"]})
             player_hp -= result["boss_damage"]
             boss_hp -= result["player_damage"]
 
