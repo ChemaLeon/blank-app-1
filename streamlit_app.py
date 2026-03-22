@@ -29,8 +29,6 @@ with st.form('hp_form'):
         st.session_state['boss_hp'] = (st.text_input("What should the boss hp be? "))
     hp_button = st.form_submit_button("Submit starting hp")
     if hp_button:
-        st.session_state['player_hp'] = int(st.session_state['player_hp'])
-        st.session_state['boss_hp'] = int(st.session_state['boss_hp'])
         st.write('Hp set!')
 if 'chat_history' not in st.session_state: 
     st.session_state['chat_history'] = [
@@ -69,10 +67,10 @@ with st.form('attack'):
             message(f"Boss HP: {st.session_state['boss_hp']}")
 
     if 'player_hp' in st.session_state and 'boss_hp' in st.session_state:
-        if st.session_state['player_hp'] <= 0:
+        if st.session_state['player_hp'] <= '0':
             st.write("\nYou were defeated.")
 
-        if st.session_state['boss_hp'] <= 0:
+        if st.session_state['boss_hp'] <= '0':
             st.write("\nYou defeated the boss!")
 
 
