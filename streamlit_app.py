@@ -38,7 +38,7 @@ if 'chat_history' not in st.session_state:
 
 with st.form('attack'):
     button = st.form_submit_button('Submit')
-    if type(st.session_state['player_hp']) == int and st.session_state['player_hp'] > 0 and boss_hp > 0:
+    if 'player_hp' in st.session_state and 'boss_hp' in st.session_state and st.session_state['player_hp'] > '0' and st.session_state['boss_hp'] > '0':
         attack = st.text_input("Describe your attack: ")
         
         if button:
