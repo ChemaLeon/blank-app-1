@@ -64,7 +64,7 @@ with st.form('attack'):
             st.session_state['player_hp'] = str(int(st.session_state['player_hp'])- result["boss_damage"])
             st.session_state['boss_hp'] = str(int(st.session_state['boss_hp'])- result["player_damage"])
 
-            message(result["description"],is_user=True)
+            #message(result["description"],is_user=True)
             message(f"Player HP: {st.session_state['player_hp']}")
             message(f"Boss HP: {st.session_state['boss_hp']}")
 
