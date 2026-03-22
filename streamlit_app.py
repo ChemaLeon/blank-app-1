@@ -23,12 +23,14 @@ Example:
 }
 """
 with st.form('hp_form'):
-    if 'player_hp' not in st.session_state:
-        st.session_state['player_hp'] = (st.text_input("What should your health be? "))
-    if 'boss_hp' not in st.session_state:
-        st.session_state['boss_hp'] = (st.text_input("What should the boss hp be? "))
+    hp_player = st.text_input("What should your health be? ")
+    hp_boss = st.text_input("What should the boss hp be? ")
     hp_button = st.form_submit_button("Submit starting hp")
     if hp_button:
+        if 'player_hp' not in st.session_state:
+            st.session_state['player_hp'] = hp_player
+        if 'boss_hp' not in st.session_state:
+            st.session_state['boss_hp'] = hp_boss
         st.write(f'Hp set! {st.session_state['player_hp']}')
 if 'chat_history' not in st.session_state: 
     st.session_state['chat_history'] = [
