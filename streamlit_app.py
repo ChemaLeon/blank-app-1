@@ -1,7 +1,6 @@
 import json
 from openai import OpenAI
 import streamlit as st
-from st_chat_message import message
 
 client = OpenAI(
     api_key=st.secrets["api_key2"]
@@ -64,9 +63,12 @@ with st.form('attack'):
             st.session_state['player_hp'] = str(int(st.session_state['player_hp'])- result["boss_damage"])
             st.session_state['boss_hp'] = str(int(st.session_state['boss_hp'])- result["player_damage"])
 
-            #message(result["description"],is_user=True)
-            message(f"Player HP: {st.session_state['player_hp']}")
-            message(f"Boss HP: {st.session_state['boss_hp']}")
+            with st.chat_message("user"):
+                st.write(result["description"])
+            with st.chat_message('ai'):
+
+                st.write(f"Player HP: {st.session_state['player_hp']}")
+                st.write(f"Boss HP: {st.session_state['boss_hp']}")
 
     if 'player_hp' in st.session_state and 'boss_hp' in st.session_state:
         if st.session_state['player_hp'] <= '0':
