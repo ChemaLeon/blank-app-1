@@ -24,8 +24,8 @@ Example:
 with st.form('hp_form'):
     hp_player = st.text_input("What should your health be? ")
     hp_boss = st.text_input("What should the boss hp be? ")
-    difficuly = st.form_submit_button("Submit the difficulty(easy, meduim, hard, master) ")
-    bosstype = st.form_submit_button("What should the boss be? ")
+    difficuly = st.text_input("Submit the difficulty(easy, meduim, hard, master) ")
+    bosstype = st.text_input("What should the boss be? ")
     submit_button = st.form_submit_button("Submit starting inputs")
 
     if submit_button:
