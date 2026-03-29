@@ -24,11 +24,15 @@ Example:
 with st.form('hp_form'):
     hp_player = st.text_input("What should your health be? ")
     hp_boss = st.text_input("What should the boss hp be? ")
-    hp_button = st.form_submit_button("Submit starting hp")
-    if hp_button:
+    difficuly = st.form_submit_button("Submit the difficulty(easy, meduim, hard, master) ")
+    bosstype = st.form_submit_button("What should the boss be? ")
+    submit_button = st.form_submit_button("Submit starting inputs")
+
+    if submit_button:
         if 'player_hp' not in st.session_state:
+            st.session_state['difficulty'] = difficuly
+            st.session_state['bosstype'] = bosstype
             st.session_state['player_hp'] = hp_player
-        if 'boss_hp' not in st.session_state:
             st.session_state['boss_hp'] = hp_boss
         st.write(f'Hp set! {st.session_state['player_hp']}')
 if 'chat_history' not in st.session_state: 
@@ -46,6 +50,8 @@ with st.form('attack'):
     Boss HP: {st.session_state['boss_hp']}
 
     The player attacks like this: {attack}
+    As you the boss, you are a {st.session_state['bosstype']}
+    and with the difficulty as{st.session_state['difficulty']}
 
     Decide how much damage both sides take and describe the action.
     """
