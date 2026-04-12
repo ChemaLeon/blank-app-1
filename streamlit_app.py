@@ -38,14 +38,6 @@ with st.form('hp_form'):
 if 'chat_history' not in st.session_state: 
     st.session_state['chat_history'] = [
                 {"role": "system", "content": system_prompt},]
-    
-for move in st.session_state["chat_history"]:
-    if move["role"] == "user":
-        with st.chat_message("user"):
-            st.write(move["content"])
-    if move["role"] == "ai":
-        with st.chat_message('ai'):
-            st.write(move['content'])
 
 with st.form('attack'):
     button = st.form_submit_button('Submit')
@@ -80,7 +72,12 @@ with st.form('attack'):
             st.session_state['chat_history'].append({'role':'assistant','content':str(result['player_damage']) + str(result["boss_damage"]) + result["description"]})
             st.session_state['player_hp'] = str(int(st.session_state['player_hp'])- result["boss_damage"])
             st.session_state['boss_hp'] = str(int(st.session_state['boss_hp'])- result["player_damage"])
+            with st.chat_message("user"):
+                st.write(result["description"])
+            with st.chat_message('ai'):
 
+                st.write(f"Player HP: {st.session_state['player_hp']}")
+                st.write(f"Boss HP: {st.session_state['boss_hp']}")
 
     if 'player_hp' in st.session_state and 'boss_hp' in st.session_state:
         if st.session_state['player_hp'] <= '0':
