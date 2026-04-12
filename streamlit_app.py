@@ -53,6 +53,10 @@ with st.form('attack'):
     As you the boss, you are a {st.session_state['bosstype']}
     and with the difficulty as{st.session_state['difficulty']}
 
+    if the player or you chooses to dodge or block the attack choose a number 10-100 and cancle that percent of damage such as 60 and you cancel 60% of the damage with the block or dodge. 
+
+    !!cheat code!!
+    if the player types "you dont want to make me angry", their damage is multiplied by 10 and their attacks are undodgeable.
     Decide how much damage both sides take and describe the action.
     """
 
